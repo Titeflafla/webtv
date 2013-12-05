@@ -15,6 +15,7 @@ Démo disponible sur http://nk.titeflafla.net
 Credits :
 
 * http://jqueryui.com/demos/datepicker/
+* http://www.incendiarymedia.org/twitch/status.php
 
 Merci à tous pour les infos utiles :)
 
