@@ -14,6 +14,52 @@ global $nuked, $language;
 translate('modules/Web_tv/lang/'. $language .'.lang.php');
 include('modules/Web_tv/config.php');
 
+// on regarde si une tv est en ligne si oui on change le logo, faut faire une petition pour avoir une api publique ;)
+/*$sql_tv = mysql_query("SELECT nom FROM ". WEB_TV ." WHERE statut = 'on'");
+list($nom) = mysql_fetch_array($sql_tv);
+if($nom != '') $img_tv = 'programme_tv_on.gif';
+else $img_tv = 'programme_tv.png';*/
+
+//http://www.incendiarymedia.org/twitch/status.php
+if(extension_loaded('openssl')) {
+	$channelName = htmlspecialchars(WEBTV_NAME, ENT_QUOTES);
+	$clientId = CLIENT_ID;
+	$json_array = json_decode(file_get_contents('https://api.twitch.tv/kraken/streams/'. strtolower($channelName) .'?client_id='. $clientId), true);
+
+	if($json_array['stream'] != NULL) {
+		$img_tv = 'programme_tv_on.gif';
+	} else {
+		$img_tv = 'programme_tv.png';
+	}
+} else {
+	echo 'L\'extension openssl n\'est pas activé !';
+}
+
+echo '<script type="text/javascript" src="modules/Admin/scripts/jquery-1.6.1.min.js"></script>'
+. '<script type="text/javascript" src="modules/Web_tv/web_tv.js"></script>';
+
+$lundi    = mktime(0, 0, 0, date('n'), date('j'), date('Y')) - ((date('N')-1)*3600*24); // le lundi de la semaine en cours, le date(N) est dispo que depuis php 5.1
+$mardi    = $lundi + 86400;
+$mercredi = $mardi + 86400;
+$jeudi    = $mercredi +86400;
+$vendredi = $jeudi + 86400;
+$samedi   = $vendredi + 86400;
+$dimanche = $samedi + 86400;
+
+$sql2 = mysql_query("SELECT active FROM " . BLOCK_TABLE . " WHERE bid = '" . $bid . "'");
+list($active) = mysql_fetch_array($sql2);
+if ($active == 3 || $active == 4) {
+	echo '<div class="webtv_programme">'
+	. '<div style="float:left;display:block;margin-left:20px;"><img src="modules/Web_tv/images/'. $img_tv .'" alt="" title="Programme WebTV" /><br />'
+	. 'Du '. strftime("%d-%m-%Y", $lundi) .' au '. strftime("%d-%m-%Y", $dimanche) .'</div>'
+	. '<div id="webtv" style="margin-left:250px!important;width:250px!important;">';
+} else {
+	echo '<div class="webtv_programme">'
+	. '<div style="text-align:center;"><img src="modules/Web_tv/images/'. $img_tv .'" alt="" title="Programme WebTV" /><br />'
+	. 'Du '. strftime("%d-%m-%Y", $lundi) .' au '. strftime("%d-%m-%Y", $dimanche) .'</div>'
+	. '<div id="webtv">';
+}
+
 // on met en cache vue que ça fait beaucoup de requette sql :o
 $cache = 'modules/Web_tv/block_cache.html';
 $expire = time() - CACHE_TIME; // valable 1 heure 3600
@@ -22,37 +68,6 @@ if(file_exists($cache) && filemtime($cache) > $expire) {
 	readfile($cache);
 } else {
 	ob_start();
-
-	echo '<script type="text/javascript" src="modules/Admin/scripts/jquery-1.6.1.min.js"></script>'
-	. '<script type="text/javascript" src="modules/Web_tv/web_tv.js"></script>';
-
-	// on regarde si une tv est en ligne si oui on change le logo, faut faire une petition pour avoir une api publique ;)
-	$sql_tv = mysql_query("SELECT nom FROM ". WEB_TV ." WHERE statut = 'on'");
-	list($nom) = mysql_fetch_array($sql_tv);
-	if($nom != '') $img_tv = 'programme_tv_on.gif';
-	else $img_tv = 'programme_tv.png';
-
-	$lundi    = mktime(0, 0, 0, date('n'), date('j'), date('Y')) - ((date('N')-1)*3600*24); // le lundi de la semaine en cours, le date(N) est dispo que depuis php 5.1
-	$mardi    = $lundi + 86400;
-	$mercredi = $mardi + 86400;
-	$jeudi    = $mercredi +86400;
-	$vendredi = $jeudi + 86400;
-	$samedi   = $vendredi + 86400;
-	$dimanche = $samedi + 86400;
-
-	$sql2 = mysql_query("SELECT active FROM " . BLOCK_TABLE . " WHERE bid = '" . $bid . "'");
-	list($active) = mysql_fetch_array($sql2);
-	if ($active == 3 || $active == 4) {
-		echo '<div class="webtv_programme">'
-		. '<div style="float:left;display:block;margin-left:20px;"><img src="modules/Web_tv/images/'. $img_tv .'" alt="" title="Programme WebTV" /><br />'
-		. 'Du '. strftime("%d-%m-%Y", $lundi) .' au '. strftime("%d-%m-%Y", $dimanche) .'</div>'
-		. '<div id="webtv" style="margin-left:250px!important;width:250px!important;">';
-	} else {
-		echo '<div class="webtv_programme">'
-		. '<div style="text-align:center;"><img src="modules/Web_tv/images/'. $img_tv .'" alt="" title="Programme WebTV" /><br />'
-		. 'Du '. strftime("%d-%m-%Y", $lundi) .' au '. strftime("%d-%m-%Y", $dimanche) .'</div>'
-		. '<div id="webtv">';
-	}
 
 	echo '<ul>';
 

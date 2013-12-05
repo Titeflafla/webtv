@@ -50,9 +50,13 @@ if ($visiteur >= $level_access && $level_access > -1) {
                 	$test++;
                 	if ($test == 1) echo "<tr>";
 
-                	if($visiteur >= 9) {                		if ($r_sql['statut'] == 'off') $img_tv = '<a href="index.php?file=Web_tv&amp;nuked_nude=admin&amp;page=admin&amp;op=active_tv&amp;id='. $r_sql['id'] .'" title="Stream On"><img src="modules/Web_tv/images/bullet_'. $r_sql['statut'] .'.png" style="vertical-align:middle;" alt="" /></a>';
+                	/*if($visiteur >= 9) {
+                		if ($r_sql['statut'] == 'off') $img_tv = '<a href="index.php?file=Web_tv&amp;nuked_nude=admin&amp;page=admin&amp;op=active_tv&amp;id='. $r_sql['id'] .'" title="Stream On"><img src="modules/Web_tv/images/bullet_'. $r_sql['statut'] .'.png" style="vertical-align:middle;" alt="" /></a>';
                 		else $img_tv = '<a href="index.php?file=Web_tv&amp;nuked_nude=admin&amp;page=admin&amp;op=desactive_tv&amp;id='. $r_sql['id'] .'" title="Stream Off"><img src="modules/Web_tv/images/bullet_'. $r_sql['statut'] .'.png" style="vertical-align:middle;" alt="" /></a>';
-			} else $img_tv = '<img src="modules/Web_tv/images/bullet_'. $r_sql['statut'] .'.png" style="vertical-align:middle;" alt="" />';
+			} else $img_tv = '<img src="modules/Web_tv/images/bullet_'. $r_sql['statut'] .'.png" style="vertical-align:middle;" alt="" />'; */
+
+                        $stream_on_off = check_twitch_channel();
+                        $img_tv = '<img src="modules/Web_tv/images/bullet_'. $stream_on_off .'.png" style="vertical-align:middle;" alt="" title="Stream '. $stream_on_off .'">';
 
                 	echo '<td valign="top" class="g2_cadre_table g2_gradient"><div style="position:relative;min-height:100px;width:98%;margin:auto;">'. $img_tv .' <a href="index.php?file=Web_tv&amp;op=view_tv&amp;id='. $r_sql['id'] .'">Web TV de : '. $r_sql['nom'] .'</a>'
                 	. '<p>'. stripslashes($r_sql['description']) .'</p>';
@@ -81,6 +85,23 @@ if ($visiteur >= $level_access && $level_access > -1) {
                 if (mysql_num_rows($sql_all_tv) == 0) echo '<br /><br /><div class="g2_cadre_table g2_gradient" style="width:90%!important;padding:10px;">Aucune Web TV !</div><br /><br />';
 
         	closetable();    	}
+
+	//http://www.incendiarymedia.org/twitch/status.php
+	function check_twitch_channel() {
+		if(extension_loaded('openssl')) {
+			$channelName = htmlspecialchars(WEBTV_NAME, ENT_QUOTES);
+			$clientId = CLIENT_ID;
+			$json_array = json_decode(file_get_contents('https://api.twitch.tv/kraken/streams/'. strtolower($channelName) .'?client_id='. $clientId), true);
+
+			if($json_array['stream'] != NULL) {
+				return 'on';
+			} else {
+				return 'off';
+			}
+		} else {
+			return 'L\'extension openssl n\'est pas activé !';
+		}
+	}
 
 	function view_tv($id) {
     		global $user, $nuked, $tv;
