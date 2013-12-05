@@ -14,14 +14,14 @@ global $nuked, $language;
 translate('modules/Web_tv/lang/'. $language .'.lang.php');
 include('modules/Web_tv/config.php');
 
-// on met en cache vue que ça fait beaucoup de requette sql :o
+// on met en cache vue que Ã§a fait beaucoup de requette sql :o
 $cache = 'modules/Web_tv/block_cache.html';
 $expire = time() - CACHE_TIME; // valable 1 heure 3600
 
 if(file_exists($cache) && filemtime($cache) > $expire) {
 	readfile($cache);
 } else {
-	ob_start();*/
+	ob_start();
 
 	echo '<script type="text/javascript" src="modules/Admin/scripts/jquery-1.6.1.min.js"></script>'
 	. '<script type="text/javascript" src="modules/Web_tv/web_tv.js"></script>';
@@ -42,10 +42,13 @@ if(file_exists($cache) && filemtime($cache) > $expire) {
 
 	$sql2 = mysql_query("SELECT active FROM " . BLOCK_TABLE . " WHERE bid = '" . $bid . "'");
 	list($active) = mysql_fetch_array($sql2);
-	if ($active == 3 || $active == 4) {		echo '<div class="webtv_programme">'
+	if ($active == 3 || $active == 4) {
+		echo '<div class="webtv_programme">'
 		. '<div style="float:left;display:block;margin-left:20px;"><img src="modules/Web_tv/images/'. $img_tv .'" alt="" title="Programme WebTV" /><br />'
 		. 'Du '. strftime("%d-%m-%Y", $lundi) .' au '. strftime("%d-%m-%Y", $dimanche) .'</div>'
-		. '<div id="webtv" style="margin-left:250px!important;width:250px!important;">';	} else {		echo '<div class="webtv_programme">'
+		. '<div id="webtv" style="margin-left:250px!important;width:250px!important;">';
+	} else {
+		echo '<div class="webtv_programme">'
 		. '<div style="text-align:center;"><img src="modules/Web_tv/images/'. $img_tv .'" alt="" title="Programme WebTV" /><br />'
 		. 'Du '. strftime("%d-%m-%Y", $lundi) .' au '. strftime("%d-%m-%Y", $dimanche) .'</div>'
 		. '<div id="webtv">';
@@ -53,7 +56,7 @@ if(file_exists($cache) && filemtime($cache) > $expire) {
 
 	echo '<ul>';
 
-	//on affiche le programme de la semaine en cours , y a pas un truc plus simple ? une boucle chaque jour ça fait beaucoup XD quoi que une grosse boucle puis en faire une chaque jour ca reviens au même non ?
+	//on affiche le programme de la semaine en cours , y a pas un truc plus simple ? une boucle chaque jour ï¿½a fait beaucoup XD quoi que une grosse boucle puis en faire une chaque jour ca reviens au mï¿½me non ?
 
 	echo '<li class="toggleTv">';
 
