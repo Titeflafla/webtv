@@ -242,7 +242,7 @@ function index(){
 					for($j = 0 ; $j < $CountMonthData; $j++){
 
 						$color1 = $bgcolor;
-						$theevent .= "&nbsp;<b><big>·</big></b>&nbsp;<a href=\"javascript:openWin('" . $this->month_data[$theday]['event_type'][$j] . "', '" . $this->month_data[$theday]['id'][$j] . "', '" . $theday . "', '" . $_REQUEST['m'] . "', '" . $_REQUEST['y'] . "')\">" . $this->month_data[$theday]['event_title'][$j] . "</a><br />";
+						$theevent .= "&nbsp;<b><big>Â·</big></b>&nbsp;<a href=\"javascript:openWin('" . $this->month_data[$theday]['event_type'][$j] . "', '" . $this->month_data[$theday]['id'][$j] . "', '" . $theday . "', '" . $_REQUEST['m'] . "', '" . $_REQUEST['y'] . "')\">" . $this->month_data[$theday]['event_title'][$j] . "</a><br />";
 					}
 
 				}else{
