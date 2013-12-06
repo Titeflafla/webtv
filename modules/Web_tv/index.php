@@ -22,7 +22,8 @@ if ($visiteur >= $level_access && $level_access > -1) {
 
         echo '<script type="text/javascript" src="modules/Web_tv/web_tv.js"></script>';
 
-    	function index() {
+    	function index() {
+
     		global $bgcolor1, $nuked, $visiteur;
 
     		opentable();
@@ -36,7 +37,8 @@ if ($visiteur >= $level_access && $level_access > -1) {
                 echo '<br /><div class="webtv_title">Liste des Web TV du site '. $nuked['name'] .'</div><br />';
 
                 $start = $_REQUEST['p'] * $nb_max_tv - $nb_max_tv;
-                if ($nb_tv > $nb_max_tv) {                	echo "<table class=\"g2_cadre_table_page\" style=\"background: ". $bgcolor1 .";\" cellspacing=\"5\" cellpadding=\"5\">"
+                if ($nb_tv > $nb_max_tv) {
+                	echo "<table class=\"g2_cadre_table_page\" style=\"background: ". $bgcolor1 .";\" cellspacing=\"5\" cellpadding=\"5\">"
             		. "<tr><td>";
                 	number($nb_tv, $nb_max_tv, 'index.php?file=Web_tv');
                 	echo "</td></tr></table>";
@@ -50,13 +52,10 @@ if ($visiteur >= $level_access && $level_access > -1) {
                 	$test++;
                 	if ($test == 1) echo "<tr>";
 
-                	/*if($visiteur >= 9) {
+                	if($visiteur >= 9) {
                 		if ($r_sql['statut'] == 'off') $img_tv = '<a href="index.php?file=Web_tv&amp;nuked_nude=admin&amp;page=admin&amp;op=active_tv&amp;id='. $r_sql['id'] .'" title="Stream On"><img src="modules/Web_tv/images/bullet_'. $r_sql['statut'] .'.png" style="vertical-align:middle;" alt="" /></a>';
                 		else $img_tv = '<a href="index.php?file=Web_tv&amp;nuked_nude=admin&amp;page=admin&amp;op=desactive_tv&amp;id='. $r_sql['id'] .'" title="Stream Off"><img src="modules/Web_tv/images/bullet_'. $r_sql['statut'] .'.png" style="vertical-align:middle;" alt="" /></a>';
-			} else $img_tv = '<img src="modules/Web_tv/images/bullet_'. $r_sql['statut'] .'.png" style="vertical-align:middle;" alt="" />'; */
-
-                        $stream_on_off = check_twitch_channel();
-                        $img_tv = '<img src="modules/Web_tv/images/bullet_'. $stream_on_off .'.png" style="vertical-align:middle;" alt="" title="Stream '. $stream_on_off .'">';
+			} else $img_tv = '<img src="modules/Web_tv/images/bullet_'. $r_sql['statut'] .'.png" style="vertical-align:middle;" alt="" />';
 
                 	echo '<td valign="top" class="g2_cadre_table g2_gradient"><div style="position:relative;min-height:100px;width:98%;margin:auto;">'. $img_tv .' <a href="index.php?file=Web_tv&amp;op=view_tv&amp;id='. $r_sql['id'] .'">Web TV de : '. $r_sql['nom'] .'</a>'
                 	. '<p>'. stripslashes($r_sql['description']) .'</p>';
@@ -84,32 +83,18 @@ if ($visiteur >= $level_access && $level_access > -1) {
 
                 if (mysql_num_rows($sql_all_tv) == 0) echo '<br /><br /><div class="g2_cadre_table g2_gradient" style="width:90%!important;padding:10px;">Aucune Web TV !</div><br /><br />';
 
-        	closetable();    	}
+        	closetable();
+    	}
 
-	//http://www.incendiarymedia.org/twitch/status.php
-	function check_twitch_channel() {
-		if(extension_loaded('openssl')) {
-			$channelName = htmlspecialchars(WEBTV_NAME, ENT_QUOTES);
-			$clientId = CLIENT_ID;
-			$json_array = json_decode(file_get_contents('https://api.twitch.tv/kraken/streams/'. strtolower($channelName) .'?client_id='. $clientId), true);
+	function view_tv($id) {
 
-			if($json_array['stream'] != NULL) {
-				return 'on';
-			} else {
-				return 'off';
-			}
-		} else {
-			return 'L\'extension openssl n\'est pas activé !';
-		}
-	}
-
-	function view_tv($id) {
     		global $user, $nuked, $tv;
 
     		if ($user) $pseudo = $user[2];
 		else $pseudo = 'web_tv_'. rand(1, 300);
 
-                if (!$id) {                	$sql_first_tv = mysql_query("SELECT id FROM ". WEB_TV ." ORDER BY id asc limit 1");
+                if (!$id) {
+                	$sql_first_tv = mysql_query("SELECT id FROM ". WEB_TV ." ORDER BY id asc limit 1");
                 	list($first_tv) = mysql_fetch_array($sql_first_tv);
                 	$tv = $first_tv;
                 } else $tv = $id;
@@ -151,7 +136,8 @@ if ($visiteur >= $level_access && $level_access > -1) {
 		if($chan_irc != '') affichage_irc($chan_irc, $pseudo, $ircw, $irch);
                 if($code_chan_irc != '') affichage_code_irc($code_chan_irc, $pseudo, $ircw, $irch);
 
-    		closetable();	}
+    		closetable();
+	}
 
         function affichage_irc($chan_irc, $pseudo, $ircw, $irch) {
 
@@ -241,24 +227,27 @@ if ($visiteur >= $level_access && $level_access > -1) {
 	           	if ($count > $nb_page_historique) number($count, $nb_page_historique, "index.php?file=Web_tv&amp;nuked_nude=index&amp;op=historique_programme&amp;id=". $id);
 	           	echo '<div id="programme_du_jour" class="tv_tableau">'
                 	. '<div class="tv_tr">';
-        	} else {        		if ($count > $nb_page_historique) number_ajax($count, $nb_page_historique, $id);
+        	} else {
+        		if ($count > $nb_page_historique) number_ajax($count, $nb_page_historique, $id);
         	}
 
         	$sql_programme_day = mysql_query("SELECT id, web_tv, jeux, titre_jeux, titre, date, heure, description FROM ". WEB_TV_PROGRAMME ." WHERE web_tv = '". $id ."' AND date < ". time() ." LIMIT " . $start . ", " . $nb_page_historique);
 		while ($r_sql = mysql_fetch_array($sql_programme_day, MYSQL_ASSOC)) {
 			$date = nkDate($r_sql['date']);
-			echo '<div class="tv_td_content"><div class="tv_td_title"><img style="vertical-align:bottom;" src="modules/Web_tv/images/jeux/16/'. $r_sql['jeux'] .'" alt="" title="'. $r_sql['titre_jeux'] .'" /> le '. $date .' à '. $r_sql['heure'] .'h : '. stripslashes($r_sql['titre']) .'</div>'
+			echo '<div class="tv_td_content"><div class="tv_td_title"><img style="vertical-align:bottom;" src="modules/Web_tv/images/jeux/16/'. $r_sql['jeux'] .'" alt="" title="'. $r_sql['titre_jeux'] .'" /> le '. $date .' Ã  '. $r_sql['heure'] .'h : '. stripslashes($r_sql['titre']) .'</div>'
 			. stripslashes(html_entity_decode($r_sql['description'])) .'</div>';
 
 		}
 
                 if(mysql_num_rows($sql_programme_day) == 0) echo '<div class="tv_td_content">'. _NOEVENTBDDALLINDEX .'</div>';
 
-                if ($historique == 'popup') {                	echo '</div></div></body></html>';
+                if ($historique == 'popup') {
+                	echo '</div></div></body></html>';
                 } else {
 			echo '</div></div><a href="javascript:void(0);" onclick="document.getElementById(\'hpt\').style.display = \'none\';">Cacher l\'historique</a></body></html>';
                 }
-        }
+
+        }
 
 	// DISPLAYS THE NUMBER OF PAGES WITH ASYNCHRONOUS JAVASCRIPT ;o
 	function number_ajax($count, $each, $id){
@@ -269,8 +258,8 @@ if ($visiteur >= $level_access && $level_access > -1) {
 	        if ($count <= 0)     $count   = 1;
 	        if (empty($current)) $current = 1; // On renormalise la page courante...
 	        // Calcul du nombre de pages
-	        $n = ceil($count / intval($each)); // on arrondit à  l'entier sup.
-	        // Début de la chaine d'affichage
+	        $n = ceil($count / intval($each)); // on arrondit Ã   l'entier sup.
+	        // DÃ©but de la chaine d'affichage
 	        $output = '<b class="pgtitle">' . _PAGE . ' :</b> ';
 
 	        for ($i = 1; $i <= $n; $i++){
@@ -288,12 +277,12 @@ if ($visiteur >= $level_access && $level_access > -1) {
 	                    $output .= sprintf('...<a href="javascript:void(0);" title="' . _PREVIOUSPAGE . '" class="pgback" onclick="historique_programme_tv(\''. $id .'\',\'%d\');">&laquo;</a> ',$current-1);
 	                    $first_done = true;
 	                }
-	                // Après la page courante
+	                // AprÃ¨s la page courante
 	                elseif (!isset($last_done) && $i > $current){
 	                    $output .= sprintf('<a href="javascript:void(0);" title="' . _NEXTPAGE . '" class="pgnext" onclick="historique_programme_tv(\''. $id .'\',\'%d\');">&raquo;</a>... ',$current+1);
 	                    $last_done = true;
 	                }
-	                // On a dépassé les cas qui nous intéressent : inutile de continuer
+	                // On a dÃ©passÃ© les cas qui nous intÃ©ressent : inutile de continuer
 	                elseif ($i > $current)
 	                    break;
 	            }
