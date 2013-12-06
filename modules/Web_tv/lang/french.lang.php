@@ -45,6 +45,8 @@ define("_NOEVENTBDDTODAYINDEX", "Aucun historique pour aujourd'hui !");
 define("_NOEVENTBDDTODAYINDEXTV", "Aucun événement pour aujourd'hui !");
 define("_EDITTHISTV", "Editer cette TV");
 define("_DELTHISTV", "Supprimer cette TV");
+define("_EDITTHISEVENT", "Editer cet événement");
+define("_DELTHISEVENT", "Supprimer cet événement");
 
 define("_ACTIONADDEVENT", "a ajouté l'événement :");
 define("_ACTIONMODIFEVENT", "a modifié l'événement :");
