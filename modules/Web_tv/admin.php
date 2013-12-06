@@ -82,8 +82,8 @@ if ($visiteur >= $level_admin && $level_admin > -1) {
             		. "<td align=\"center\">" . $titre . "</td>\n"
             		. "<td align=\"center\">" . $titre_tv . "</td>\n"
             		. "<td align=\"center\">" . $date ." : ". $heure. "h</td>\n"
-            		. "<td align=\"center\"><a href=\"index.php?file=Web_tv&amp;page=admin&amp;op=edit_event&amp;id=" . $id . "\"><img style=\"border: 0;\" src=\"images/edit.gif\" alt=\"\" title=\"" . _EDITTHISSCREEN . "\" /></a></td>\n"
-            		. "<td align=\"center\"><a href=\"javascript:del_event('" . mysql_real_escape_string(stripslashes($titre)) . "', '" . $id . "');\"><img style=\"border: 0;\" src=\"images/del.gif\" alt=\"\" title=\"" . _DELTHISSCREEN . "\" /></a></td></tr>\n";
+            		. "<td align=\"center\"><a href=\"index.php?file=Web_tv&amp;page=admin&amp;op=edit_event&amp;id=" . $id . "\"><img style=\"border: 0;\" src=\"images/edit.gif\" alt=\"\" title=\"" . _EDITTHISEVENT . "\" /></a></td>\n"
+            		. "<td align=\"center\"><a href=\"javascript:del_event('" . mysql_real_escape_string(stripslashes($titre)) . "', '" . $id . "');\"><img style=\"border: 0;\" src=\"images/del.gif\" alt=\"\" title=\"" . _DELTHISEVENT . "\" /></a></td></tr>\n";
             	}
 
                 if ($count == 0) echo "<tr><td colspan=\"6\" align=\"center\">" . _NOEVENTBDD . "</td></tr>";
