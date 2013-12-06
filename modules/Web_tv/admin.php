@@ -101,7 +101,7 @@ if ($visiteur >= $level_admin && $level_admin > -1) {
 
                 echo '<script type="text/javascript" src="modules/Admin/scripts/jquery-1.6.1.min.js"></script>'
                 . '<script type="text/javascript" src="media/js/jquery-ui/jquery-ui-1.8.21.custom.min.js"></script>' //jquery c'est moche na !!
-                . '<link title="style" type="text/css" rel="stylesheet" href="media/js/jquery-ui/css/smoothness/jquery-ui-1.8.21.custom.css" />' // Mais non c'est pas moche d'inclure du css comme �a � l'arrache XD
+                . '<link title="style" type="text/css" rel="stylesheet" href="media/js/jquery-ui/css/smoothness/jquery-ui-1.8.21.custom.css" />' // Mais non c'est pas moche d'inclure du css comme ça à l'arrache XD
                 . "<div class=\"content-box\">\n"
 	        . "<div class=\"content-box-header\"><h3>" . _ADMINWEBTV . "</h3>\n"
 	        . "<div style=\"text-align:right;\"><a href=\"help/" . $language . "/Webtv.php\" rel=\"modal\">\n"
@@ -135,8 +135,8 @@ if ($visiteur >= $level_admin && $level_admin > -1) {
 				dayNames: [\"Dimanche\", \"Lundi\", \"Mardi\", \"Mercredi\", \"Jeudi\", \"Vendredi\", \"Samedi\"],
 				dayNamesMin: [\"Di\", \"Lu\", \"Ma\", \"Me\", \"Je\", \"Ve\", \"Sa\"],
 				dayNamesShort: [\"Dim\", \"Lun\", \"Mar\", \"Mer\", \"Jeu\", \"Ven\", \"Sam\"],
-				monthNames: [\"Janvier\",\"Fevrier\",\"Mars\",\"Avril\",\"Mai\",\"Juin\",\"Juillet\",\"A�ut\",\"Septembre\",\"Octobre\",\"Novembre\",\"D�cembre\"],
-				nextText: \"Suivant\", prevText: \"Pr�c�dent\",
+				monthNames: [\"Janvier\",\"Fevrier\",\"Mars\",\"Avril\",\"Mai\",\"Juin\",\"Juillet\",\"Aôut\",\"Septembre\",\"Octobre\",\"Novembre\",\"Décembre\"],
+				nextText: \"Suivant\", prevText: \"Précédent\",
 				firstDay: 1
 			});
 		});
@@ -215,8 +215,8 @@ if ($visiteur >= $level_admin && $level_admin > -1) {
 				dayNames: [\"Dimanche\", \"Lundi\", \"Mardi\", \"Mercredi\", \"Jeudi\", \"Vendredi\", \"Samedi\"],
 				dayNamesMin: [\"Di\", \"Lu\", \"Ma\", \"Me\", \"Je\", \"Ve\", \"Sa\"],
 				dayNamesShort: [\"Dim\", \"Lun\", \"Mar\", \"Mer\", \"Jeu\", \"Ven\", \"Sam\"],
-				monthNames: [\"Janvier\",\"Fevrier\",\"Mars\",\"Avril\",\"Mai\",\"Juin\",\"Juillet\",\"A�ut\",\"Septembre\",\"Octobre\",\"Novembre\",\"D�cembre\"],
-				nextText: \"Suivant\", prevText: \"Pr�c�dent\",
+				monthNames: [\"Janvier\",\"Fevrier\",\"Mars\",\"Avril\",\"Mai\",\"Juin\",\"Juillet\",\"Aôut\",\"Septembre\",\"Octobre\",\"Novembre\",\"Décembre\"],
+				nextText: \"Suivant\", prevText: \"Précédent\",
 				firstDay: 1
 			});
 		});
@@ -307,8 +307,8 @@ if ($visiteur >= $level_admin && $level_admin > -1) {
 		        . "<td>". stripslashes($r_sql['nom']) ."</td>\n"
 		        . "<td>". $r_sql['type'] ."</td>\n"
                 	. "<td align=\"center\">". $img_actif ."</td>\n"
-                	. "<td align=\"center\"><a href=\"index.php?file=Web_tv&amp;page=admin&amp;op=edit_tv&amp;id=" . $r_sql['id'] . "\"><img style=\"border: 0;\" src=\"images/edit.gif\" alt=\"\" title=\"" . _EDITTHISTV . "\" /></a></td>\n"
-                	. "<td align=\"center\"><a href=\"javascript:del_tv('" . mysql_real_escape_string(stripslashes($r_sql['nom'])) . "', '" . $r_sql['id'] . "');\"><img style=\"border: 0;\" src=\"images/del.gif\" alt=\"\" title=\"" . _DELTHISTV . "\" /></a></td>\n";
+                	. "<td align=\"center\"><a href=\"index.php?file=Web_tv&amp;page=admin&amp;op=edit_tv&amp;id=" . $r_sql['id'] . "\"><img style=\"border: 0;\" src=\"images/edit.gif\" alt=\"\" title=\"" . _EDITTHISSCREEN . "\" /></a></td>\n"
+                	. "<td align=\"center\"><a href=\"javascript:del_tv('" . mysql_real_escape_string(stripslashes($r_sql['nom'])) . "', '" . $r_sql['id'] . "');\"><img style=\"border: 0;\" src=\"images/del.gif\" alt=\"\" title=\"" . _DELTHISSCREEN . "\" /></a></td>\n";
                 }
 
                 if (mysql_num_rows($sql_all_tv) == 0) echo "<tr><td colspan=\"5\" align=\"center\">" . _NOTVBDD . "</td></tr>";
@@ -375,7 +375,7 @@ if ($visiteur >= $level_admin && $level_admin > -1) {
                 	//on regarde s'il y a bien la balise iframe
                 	if(preg_match('/src="([^"]*)"/', stripslashes($url), $matches)) $url_tv = $matches[1];
                 	else $url_tv = stripslashes($url);
-                } else $url_tv = $url; //si l'url est en flash on laisse comme �a
+                } else $url_tv = $url; //si l'url est en flash on laisse comme ça
 
                 $url_tv = mysql_real_escape_string(stripslashes($url_tv));
                 $description = html_entity_decode($description);
@@ -578,7 +578,7 @@ if ($visiteur >= $level_admin && $level_admin > -1) {
 			else echo '<span style="color:#B00000;">copier le code embed iframe de votre web tv !</span>';
 		} elseif($_POST['url'] != '' && $_POST['type'] == 'flash') {
 			sleep(2);  //on fait genre le serveur cherche XD
-			// on regarde si il y a bien le code object \o/ peut �tre � am�liorer ;)
+			// on regarde si il y a bien le code object \o/ peut être à améliorer ;)
 			if(preg_match('/object/', stripslashes($_POST['url']), $matches)) echo '<span style="color:#008000;">Code Tv ok</span>';
 			else echo '<span style="color:#B00000;">copier le code embed flash de votre web tv !</span>';
 		}
