@@ -10,7 +10,7 @@ en attente de la version 1.8 pour une version finale !
 
 Vous n'êtes pas obliger de changer le module calendar si vous n'avez pas envies d'afficher le programme de la tv dessus.
 
-Démo disponible sur http://nk.titeflafla.net
+Démo disponible sur http://nk.chezyann.net
 
 Credits :
 
